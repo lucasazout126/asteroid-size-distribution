@@ -43,8 +43,9 @@ log_counts = np.log10(counts[counts != 0])
 
 # Fit a straight line through the log-log data to find the power law exponent
 # curve_fit returns the best [slope, intercept] for our line function
-popt, _ = optimize.curve_fit(line, log_diam, log_counts)
+popt, pcov = optimize.curve_fit(line, log_diam, log_counts)
 slope, intercept = popt
+slope_err = np.sqrt(np.diag(pcov))[0]
 
 # Convert the line back into a power law curve and draw it over the histogram
 diam_vals = np.linspace(np.min(bin_centers), np.max(bin_centers))
@@ -68,6 +69,6 @@ plt.title('Diameter Distribution of Asteroids (Log-Log)')
 plt.legend()
 plt.show()
 
-print(f"Best-fit slope: {slope:.3f}")
+print(f"Best-fit slope: {slope:.3f} ± {slope_err:.3f}")
 
 # python "c:\Users\lucas\OneDrive\Desktop\Data Science Projects\Python\Asteroid Mass Distribution.py"
